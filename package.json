@@ -10,7 +10,9 @@
   "author": "<eshooluwasegun98@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "pg": "^8.11.3",
     "uuidv4": "^6.2.13"
   },

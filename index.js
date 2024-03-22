@@ -1,47 +1,52 @@
 // Import express
-const express = require("express")
-const db = require('./db')
+const express = require("express");
+const db = require("./db");
 // const { uuid } = require('uuidv4');
-const { v4 } = require('uuid')
 // Instantiate the express server
-const app = express()
+const app = express();
+// Initialize error async library
+require("express-async-errors");
+
+app.use(express.json());
+
+// NotFound middleware
+const NotFoundMiddleware = require("./middleware/not-found");
+// Error handling middleware
+const ErrorMiddleware = require("./middleware/error");
+
+const dataRouter = require("./routes/data.route");
+const createTable = require("./tables/query.tables");
 
 // Set server port
-const port = 5000
-
-// db connection
-db.connect()
-  .then(() => {
-    console.log('Connected to PostgreSQL database');
-  })
-  .catch((err) => {
-    console.error('Error connecting to PostgreSQL database', err);
-   });
-
-
-
-// create record
-app.post('/create', function (req, res){
-    db.query(`INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', 'segun', 'segun@gmail.com', 'altruist', 'altruist@1')`, function(err, data){
-        if(err){
-            console.log(err)
-        } else {
-            console.log(data)
-        }
-    })
-})
-
-
+const port = 5000;
 
 // Send a response to request
-app.get("/", function(req, res){
-    console.log("It is working!!!")
-    res.send("It is working")
-})
 
+app.get("/", function (req, res) {
+  console.log("It is working!!!");
+  res.send("It is working");
+});
 
+// Create data request
+app.use("/", dataRouter);
 
-/// Server listens to event
-app.listen(port, function(){
-    console.log(`Server running on port: ${port}`)
-})
+// Middleware invoked
+app.use(NotFoundMiddleware);
+app.use(ErrorMiddleware);
+
+// Start DB
+const startDB = async () => {
+  try {
+    await db.connect();
+    /// Server listens to event
+    createTable();
+    app.listen(port, function () {
+      console.log(`Server running on port: ${port}`);
+    });
+    // Create table
+  } catch (error) {
+    console.log("Error occurred while connecting to PostgreSQL", error);
+  }
+};
+
+startDB();
