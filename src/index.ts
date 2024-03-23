@@ -14,7 +14,7 @@ import NotFoundMiddleware from "./middleware/not-found";
 import ErrorMiddleware from "./middleware/error";
 
 import dataRouter from "./routes/data.route";
-import createTable from "./src/tables/query.tables";
+import createTable from "./tables/query.tables";
 
 // Set server port
 const port = 5000;

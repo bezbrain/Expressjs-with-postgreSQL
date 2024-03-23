@@ -34,7 +34,7 @@ const createData = async (req: Request, res: Response) => {
         console.log(err);
         res.status(400).json({
           status: false,
-          message: `${err.detail}`,
+          message: `${err}`,
         });
       } else {
         res.status(201).json({
@@ -79,31 +79,28 @@ const deleteData = async (req: Request, res: Response) => {
     });
   }
 
-  db.query(
-    `DELETE FROM customer WHERE id = '${dataID}'`,
-    (err: any, data: { rowCount: number }) => {
-      if (err) {
-        return res.status(500).json({
+  db.query(`DELETE FROM customer WHERE id = '${dataID}'`, (err, data) => {
+    if (err) {
+      return res.status(500).json({
+        status: false,
+        message: "Error deleting data from the database",
+      });
+    } else {
+      // console.log(data.rowCount);
+      // Check if any rows to be deleted does not exist
+      if (data.rowCount === 0) {
+        res.status(404).json({
           status: false,
-          message: "Error deleting data from the database",
+          message: "Customer not found",
         });
       } else {
-        // console.log(data.rowCount);
-        // Check if any rows to be deleted does not exist
-        if (data.rowCount === 0) {
-          res.status(404).json({
-            status: false,
-            message: "Customer not found",
-          });
-        } else {
-          res.status(200).json({
-            status: true,
-            message: "Customer deleted successfully",
-          });
-        }
+        res.status(200).json({
+          status: true,
+          message: "Customer deleted successfully",
+        });
       }
     }
-  );
+  });
 };
 
 // Update user
@@ -138,7 +135,7 @@ const updateData = async (req: Request, res: Response) => {
   updateQuery += updateFields.join(", ") + ` WHERE id = '${dataID}'`;
   // console.log(updateQuery);
 
-  db.query(updateQuery, (err: any, data: { rowCount: number }) => {
+  db.query(updateQuery, (err: any, data) => {
     if (err) {
       return res.status(500).json({
         status: false,
@@ -160,9 +157,11 @@ const updateData = async (req: Request, res: Response) => {
   });
 };
 
-module.exports = {
-  createData,
-  getData,
-  deleteData,
-  updateData,
-};
+// module.exports = {
+//   createData,
+//   getData,
+//   deleteData,
+//   updateData,
+// };
+
+export { createData, getData, deleteData, updateData };
