@@ -3,7 +3,7 @@ import user from "../mockDB/mock-db";
 import db from "../db";
 const { v4 } = require("uuid");
 
-// Create a record
+// CREATE A RECORD
 const createData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
@@ -31,10 +31,11 @@ const createData = async (req: Request, res: Response) => {
     `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', '${name}', '${email}', '${username}', '${password}')`,
     (err, data) => {
       if (err) {
-        console.log(err.message);
+        // console.log(err);
+        // console.log(err.message);
         res.status(400).json({
           status: false,
-          message: `${err}`,
+          message: `${err.message}`,
         });
       } else {
         res.status(201).json({
@@ -46,7 +47,7 @@ const createData = async (req: Request, res: Response) => {
   );
 };
 
-// Get all users
+// GET ALL CUSTOMERS
 const getData = async (req: Request, res: Response) => {
   db.query(
     `SELECT id, name, email, username FROM customer`,
@@ -68,7 +69,7 @@ const getData = async (req: Request, res: Response) => {
   );
 };
 
-// Delete user
+// DELETE CUSTOMER
 const deleteData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
@@ -103,7 +104,7 @@ const deleteData = async (req: Request, res: Response) => {
   });
 };
 
-// Update user
+// UPDATE CUSTOMER
 const updateData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
   const { name, email, username, password } = req.body;
