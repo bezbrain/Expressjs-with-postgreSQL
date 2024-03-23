@@ -13,4 +13,5 @@ router.post("/create", createData);
 router.delete("/deleteData/:dataID", deleteData);
 router.patch("/updateData/:dataID", updateData);
 
-module.exports = router;
+// module.exports = router;
+export default router;
