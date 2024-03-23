@@ -4,7 +4,7 @@ interface User {
   lastName: string;
 }
 
-const user: User = [
+const user: User[] = [
   {
     id: 1,
     firstName: "Mike",

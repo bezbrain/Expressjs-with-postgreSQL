@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import user from "../mockDB/mock-db";
-const db = require("../db");
+import db from "../db";
 const { v4 } = require("uuid");
 
 // Create a record
