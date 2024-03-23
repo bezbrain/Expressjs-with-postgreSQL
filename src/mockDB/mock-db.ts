@@ -1,4 +1,10 @@
-const user = [
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
+const user: User[] = [
   {
     id: 1,
     firstName: "Mike",
@@ -26,4 +32,6 @@ const user = [
   },
 ];
 
-module.exports = user;
+// module.exports = user;
+
+export default user;

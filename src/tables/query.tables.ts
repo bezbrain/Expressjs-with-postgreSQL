@@ -1,4 +1,4 @@
-const db = require("../db");
+import db from "../db";
 
 const createTable = () => {
   db.query(
@@ -9,7 +9,7 @@ const createTable = () => {
         username varchar UNIQUE NOT NULL,
         password varchar NOT NULL
       )`,
-    function (err) {
+    function (err: any) {
       if (err) {
         console.log(err);
       } else {
@@ -19,4 +19,5 @@ const createTable = () => {
   );
 };
 
-module.exports = createTable;
+// module.exports = createTable;
+export default createTable;

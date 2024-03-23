@@ -1,4 +1,11 @@
-const ErrorMiddleware = async (err, req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+
+const ErrorMiddleware = async (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const customError = {
     message: err.message || "Something went wrong. Please try again later!",
     statusCode: err.statusCode || 500,
@@ -10,4 +17,5 @@ const ErrorMiddleware = async (err, req, res, next) => {
   });
 };
 
-module.exports = ErrorMiddleware;
+// module.exports = ErrorMiddleware;
+export default ErrorMiddleware;

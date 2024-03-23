@@ -1,28 +1,27 @@
 // Import express
-const express = require("express");
-const db = require("./db");
-// const { uuid } = require('uuidv4');
+import express, { Request, Response, NextFunction } from "express";
+import db from "./db";
 // Instantiate the express server
 const app = express();
 // Initialize error async library
-require("express-async-errors");
+import "express-async-errors";
 
 app.use(express.json());
 
 // NotFound middleware
-const NotFoundMiddleware = require("./middleware/not-found");
+import NotFoundMiddleware from "./middleware/not-found";
 // Error handling middleware
-const ErrorMiddleware = require("./middleware/error");
+import ErrorMiddleware from "./middleware/error";
 
-const dataRouter = require("./routes/data.route");
-const createTable = require("./tables/query.tables");
+import dataRouter from "./routes/data.route";
+import createTable from "./tables/query.tables";
 
 // Set server port
 const port = 5000;
 
 // Send a response to request
 
-app.get("/", function (req, res) {
+app.get("/", (req: Request, res: Response) => {
   console.log("It is working!!!");
   res.send("It is working");
 });
@@ -38,8 +37,8 @@ app.use(ErrorMiddleware);
 const startDB = async () => {
   try {
     await db.connect();
+    createTable(); // Create a table if it does not exist
     /// Server listens to event
-    createTable();
     app.listen(port, function () {
       console.log(`Server running on port: ${port}`);
     });

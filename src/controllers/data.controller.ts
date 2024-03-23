@@ -1,9 +1,10 @@
-const user = require("../mockDB/mock-db");
-const db = require("../db");
+import { Response, Request, NextFunction } from "express";
+import user from "../mockDB/mock-db";
+import db from "../db";
 const { v4 } = require("uuid");
 
-// Create a record
-const createData = async (req, res) => {
+// CREATE A RECORD
+const createData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
   // Check if no field is empty
@@ -30,10 +31,11 @@ const createData = async (req, res) => {
     `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', '${name}', '${email}', '${username}', '${password}')`,
     (err, data) => {
       if (err) {
-        console.log(err.detail);
+        // console.log(err);
+        // console.log(err.message);
         res.status(400).json({
           status: false,
-          message: `${err.detail}`,
+          message: `${err.message}`,
         });
       } else {
         res.status(201).json({
@@ -45,27 +47,30 @@ const createData = async (req, res) => {
   );
 };
 
-// Get all users
-const getData = async (req, res) => {
-  db.query(`SELECT id, name, email, username FROM customer`, (err, data) => {
-    if (err) {
-      res.status(500).json({
-        status: false,
-        message: "Error retrieving data from the database",
-      });
-    } else {
-      res.status(200).json({
-        status: true,
-        message: "Users fetched",
-        length: data.rows.length,
-        data: data.rows,
-      });
+// GET ALL CUSTOMERS
+const getData = async (req: Request, res: Response) => {
+  db.query(
+    `SELECT id, name, email, username FROM customer`,
+    (err: any, data: { rows: string | any[] }) => {
+      if (err) {
+        res.status(500).json({
+          status: false,
+          message: "Error retrieving data from the database",
+        });
+      } else {
+        res.status(200).json({
+          status: true,
+          message: "Users fetched",
+          length: data.rows.length,
+          data: data.rows,
+        });
+      }
     }
-  });
+  );
 };
 
-// Delete user
-const deleteData = async (req, res) => {
+// DELETE CUSTOMER
+const deleteData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
   if (!dataID) {
@@ -99,8 +104,8 @@ const deleteData = async (req, res) => {
   });
 };
 
-// Update user
-const updateData = async (req, res) => {
+// UPDATE CUSTOMER
+const updateData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
   const { name, email, username, password } = req.body;
 
@@ -131,7 +136,7 @@ const updateData = async (req, res) => {
   updateQuery += updateFields.join(", ") + ` WHERE id = '${dataID}'`;
   // console.log(updateQuery);
 
-  db.query(updateQuery, (err, data) => {
+  db.query(updateQuery, (err: any, data) => {
     if (err) {
       return res.status(500).json({
         status: false,
@@ -153,9 +158,11 @@ const updateData = async (req, res) => {
   });
 };
 
-module.exports = {
-  createData,
-  getData,
-  deleteData,
-  updateData,
-};
+// module.exports = {
+//   createData,
+//   getData,
+//   deleteData,
+//   updateData,
+// };
+
+export { createData, getData, deleteData, updateData };
