@@ -9,7 +9,7 @@ const createTable = () => {
         username varchar UNIQUE NOT NULL,
         password varchar NOT NULL
       )`,
-    function (err) {
+    function (err: any) {
       if (err) {
         console.log(err);
       } else {
