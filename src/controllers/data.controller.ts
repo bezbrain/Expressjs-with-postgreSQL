@@ -104,6 +104,20 @@ const deleteData = async (req: Request, res: Response) => {
   });
 };
 
+// DELETE MANY ROWS BASED ON EMAIL
+const deleteMultipleCustomers = async (req: Request, res: Response) => {
+  db.query(
+    `DELETE FROM customer WHERE email LIKE '%@gmail.com'`,
+    (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Success");
+      }
+    }
+  );
+};
+
 // UPDATE CUSTOMER
 const updateData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
@@ -165,4 +179,4 @@ const updateData = async (req: Request, res: Response) => {
 //   updateData,
 // };
 
-export { createData, getData, deleteData, updateData };
+export { createData, getData, deleteData, updateData, deleteMultipleCustomers };

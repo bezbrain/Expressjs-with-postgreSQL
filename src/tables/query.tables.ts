@@ -7,9 +7,11 @@ const createTable = () => {
         name varchar NOT NULL,
         email varchar UNIQUE NOT NULL,
         username varchar UNIQUE NOT NULL,
-        password varchar NOT NULL
+        password varchar NOT NULL,
+        createdAt timestamp default current_timestamp,
+        updatedAt timestamp default current_timestamp
       )`,
-    function (err: any) {
+    (err) => {
       if (err) {
         console.log(err);
       } else {
