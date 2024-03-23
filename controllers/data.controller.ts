@@ -1,9 +1,10 @@
-const user = require("../mockDB/mock-db");
+import { Response, Request, NextFunction } from "express";
+import user from "../mockDB/mock-db";
 const db = require("../db");
 const { v4 } = require("uuid");
 
 // Create a record
-const createData = async (req, res) => {
+const createData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
   // Check if no field is empty
@@ -28,7 +29,7 @@ const createData = async (req, res) => {
   // Proceed with DB insertion
   db.query(
     `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', '${name}', '${email}', '${username}', '${password}')`,
-    (err, data) => {
+    (err: { detail: any }, data: any) => {
       if (err) {
         console.log(err.detail);
         res.status(400).json({
@@ -46,26 +47,29 @@ const createData = async (req, res) => {
 };
 
 // Get all users
-const getData = async (req, res) => {
-  db.query(`SELECT id, name, email, username FROM customer`, (err, data) => {
-    if (err) {
-      res.status(500).json({
-        status: false,
-        message: "Error retrieving data from the database",
-      });
-    } else {
-      res.status(200).json({
-        status: true,
-        message: "Users fetched",
-        length: data.rows.length,
-        data: data.rows,
-      });
+const getData = async (req: Request, res: Response) => {
+  db.query(
+    `SELECT id, name, email, username FROM customer`,
+    (err: any, data: { rows: string | any[] }) => {
+      if (err) {
+        res.status(500).json({
+          status: false,
+          message: "Error retrieving data from the database",
+        });
+      } else {
+        res.status(200).json({
+          status: true,
+          message: "Users fetched",
+          length: data.rows.length,
+          data: data.rows,
+        });
+      }
     }
-  });
+  );
 };
 
 // Delete user
-const deleteData = async (req, res) => {
+const deleteData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
   if (!dataID) {
@@ -75,32 +79,35 @@ const deleteData = async (req, res) => {
     });
   }
 
-  db.query(`DELETE FROM customer WHERE id = '${dataID}'`, (err, data) => {
-    if (err) {
-      return res.status(500).json({
-        status: false,
-        message: "Error deleting data from the database",
-      });
-    } else {
-      // console.log(data.rowCount);
-      // Check if any rows to be deleted does not exist
-      if (data.rowCount === 0) {
-        res.status(404).json({
+  db.query(
+    `DELETE FROM customer WHERE id = '${dataID}'`,
+    (err: any, data: { rowCount: number }) => {
+      if (err) {
+        return res.status(500).json({
           status: false,
-          message: "Customer not found",
+          message: "Error deleting data from the database",
         });
       } else {
-        res.status(200).json({
-          status: true,
-          message: "Customer deleted successfully",
-        });
+        // console.log(data.rowCount);
+        // Check if any rows to be deleted does not exist
+        if (data.rowCount === 0) {
+          res.status(404).json({
+            status: false,
+            message: "Customer not found",
+          });
+        } else {
+          res.status(200).json({
+            status: true,
+            message: "Customer deleted successfully",
+          });
+        }
       }
     }
-  });
+  );
 };
 
 // Update user
-const updateData = async (req, res) => {
+const updateData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
   const { name, email, username, password } = req.body;
 
@@ -131,7 +138,7 @@ const updateData = async (req, res) => {
   updateQuery += updateFields.join(", ") + ` WHERE id = '${dataID}'`;
   // console.log(updateQuery);
 
-  db.query(updateQuery, (err, data) => {
+  db.query(updateQuery, (err: any, data: { rowCount: number }) => {
     if (err) {
       return res.status(500).json({
         status: false,
