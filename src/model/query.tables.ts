@@ -1,4 +1,4 @@
-import db from "../db";
+import db from "../datasource/db";
 
 const createTable = () => {
   db.query(

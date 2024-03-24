@@ -1,6 +1,6 @@
 // Import express
 import express, { Request, Response, NextFunction } from "express";
-import db from "./db";
+import db from "./datasource/db";
 // Instantiate the express server
 const app = express();
 // Initialize error async library
@@ -14,7 +14,7 @@ import NotFoundMiddleware from "./middleware/not-found";
 import ErrorMiddleware from "./middleware/error";
 
 import dataRouter from "./routes/data.route";
-import createTable from "./tables/query.tables";
+import createTable from "./model/query.tables";
 
 // Set server port
 const port = 5000;

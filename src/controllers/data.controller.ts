@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import user from "../mockDB/mock-db";
-import db from "../db";
+import db from "../datasource/db";
+import { create } from "../repository/customer.repo";
 const { v4 } = require("uuid");
 
 // CREATE A RECORD
@@ -27,24 +28,12 @@ const createData = async (req: Request, res: Response) => {
   }
 
   // Proceed with DB insertion
-  db.query(
-    `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', '${name}', '${email}', '${username}', '${password}')`,
-    (err, data) => {
-      if (err) {
-        // console.log(err);
-        // console.log(err.message);
-        res.status(400).json({
-          status: false,
-          message: `${err.message}`,
-        });
-      } else {
-        res.status(201).json({
-          status: true,
-          message: "Customer created",
-        });
-      }
-    }
-  );
+  await create(name, email, username, password);
+
+  res.status(201).json({
+    status: true,
+    message: "Customer created",
+  });
 };
 
 // GET ALL CUSTOMERS

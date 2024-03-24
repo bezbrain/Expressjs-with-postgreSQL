@@ -1,12 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-// const {
-//   createData,
-//   getData,
-//   deleteData,
-//   updateData,
-// } = require("../controllers/data.controller");
 import {
   getData,
   createData,
