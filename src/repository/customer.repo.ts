@@ -7,11 +7,21 @@ const create = async (
   username: string,
   password: string
 ) => {
-  // const id = v4()
   return await db.query(
     `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', $1, $2, $3, $4)`,
     [name, email, username, password]
   );
 };
 
-export { create };
+const get = async () => {
+  return await db.query(`SELECT id, name, email, username FROM customer`);
+};
+
+const getSingle = async (dataID: string) => {
+  return await db.query(
+    `SELECT id, name, email, username FROM customer WHERE id = $1`,
+    [dataID]
+  );
+};
+
+export { create, get, getSingle };

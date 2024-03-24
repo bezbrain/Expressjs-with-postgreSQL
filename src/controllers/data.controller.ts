@@ -1,8 +1,9 @@
 import { Response, Request, NextFunction } from "express";
 import user from "../mockDB/mock-db";
 import db from "../datasource/db";
-import { create } from "../repository/customer.repo";
-import { BadRequestError } from "../errors";
+import { create, get, getSingle } from "../repository/customer.repo";
+import { BadRequestError, NotFoundError } from "../errors";
+import { StatusCodes } from "http-status-codes";
 const { v4 } = require("uuid");
 
 // CREATE A RECORD
@@ -25,7 +26,7 @@ const createData = async (req: Request, res: Response) => {
   // Proceed with DB insertion
   await create(name, email, username, password);
 
-  res.status(201).json({
+  res.status(StatusCodes.CREATED).json({
     status: true,
     message: "Customer created",
   });
@@ -33,24 +34,24 @@ const createData = async (req: Request, res: Response) => {
 
 // GET ALL CUSTOMERS
 const getData = async (req: Request, res: Response) => {
-  db.query(
-    `SELECT id, name, email, username FROM customer`,
-    (err: any, data: { rows: string | any[] }) => {
-      if (err) {
-        res.status(500).json({
-          status: false,
-          message: "Error retrieving data from the database",
-        });
-      } else {
-        res.status(200).json({
-          status: true,
-          message: "Users fetched",
-          length: data.rows.length,
-          data: data.rows,
-        });
-      }
-    }
-  );
+  const response = await get();
+
+  res.status(StatusCodes.OK).json({
+    status: true,
+    rowCount: response.rowCount,
+    data: response.rows,
+  });
+};
+
+// GET SINGLE CUSTOMER
+const getSingleData = async (req: Request, res: Response) => {
+  const { dataID } = req.params;
+
+  if (!dataID) {
+    throw new NotFoundError(`User with the ID ${dataID} does not exist`);
+  }
+
+  await getSingle(dataID);
 };
 
 // DELETE CUSTOMER
@@ -156,11 +157,11 @@ const updateData = async (req: Request, res: Response) => {
   });
 };
 
-// module.exports = {
-//   createData,
-//   getData,
-//   deleteData,
-//   updateData,
-// };
-
-export { createData, getData, deleteData, updateData, deleteMultipleCustomers };
+export {
+  createData,
+  getData,
+  getSingleData,
+  deleteData,
+  updateData,
+  deleteMultipleCustomers,
+};

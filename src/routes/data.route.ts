@@ -7,9 +7,11 @@ import {
   deleteData,
   updateData,
   deleteMultipleCustomers,
+  getSingleData,
 } from "../controllers/data.controller";
 
 router.get("/getData", getData);
+router.get("/getData/:dataID", getSingleData);
 router.post("/create", createData);
 router.delete("/deleteData/:dataID", deleteData);
 router.delete("/deleteManyData", deleteMultipleCustomers);
