@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import user from "../mockDB/mock-db";
 import db from "../datasource/db";
 import { create } from "../repository/customer.repo";
+import { BadRequestError } from "../errors";
 const { v4 } = require("uuid");
 
 // CREATE A RECORD
@@ -10,20 +11,14 @@ const createData = async (req: Request, res: Response) => {
 
   // Check if no field is empty
   if (!name || !email || !username || !password) {
-    return res.status(400).json({
-      status: false,
-      message: "No field should be empty",
-    });
+    throw new BadRequestError("No field should be empty");
   }
 
   // Ensure no unexpected fields are present
   const allowedFields = ["name", "email", "username", "password"];
   for (const field in req.body) {
     if (!allowedFields.includes(field)) {
-      return res.status(400).json({
-        status: false,
-        message: `Unexpected field: ${field}`,
-      });
+      throw new BadRequestError(`Unexpected field: ${field}`);
     }
   }
 

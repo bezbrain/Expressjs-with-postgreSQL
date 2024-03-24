@@ -6,10 +6,8 @@ const ErrorMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(err.message);
-
   const customError = {
-    message: err.detail || "Something went wrong. Please try again later!",
+    message: err.message || "Something went wrong. Please try again later!",
     statusCode: err.statusCode || 500,
   };
 
