@@ -48,10 +48,19 @@ const getSingleData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
   if (!dataID) {
-    throw new NotFoundError(`User with the ID ${dataID} does not exist`);
+    throw new NotFoundError(`User with the ID, ${dataID} does not exist`);
   }
 
-  await getSingle(dataID);
+  const customer = await getSingle(dataID);
+
+  if (customer.rowCount === 0) {
+    throw new NotFoundError(`User with the ID, ${dataID} does not exist`);
+  }
+
+  res.status(StatusCodes.OK).json({
+    status: true,
+    data: customer.rows,
+  });
 };
 
 // DELETE CUSTOMER
