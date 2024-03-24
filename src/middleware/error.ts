@@ -9,9 +9,16 @@ const ErrorMiddleware = async (
   console.log(err.message);
 
   const customError = {
-    message: err.message || "Something went wrong. Please try again later!",
+    message: err.detail || "Something went wrong. Please try again later!",
     statusCode: err.statusCode || 500,
   };
+
+  // Uniqueness error
+  if (err.message.includes("duplicate")) {
+    const extractValue = err.constraint.split("_");
+    const capitalizeErrorMsg = extractValue[1].toUpperCase();
+    customError.message = `${capitalizeErrorMsg} already existed`;
+  }
 
   res.status(customError.statusCode).json({
     status: false,
