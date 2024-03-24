@@ -24,4 +24,8 @@ const getSingle = async (dataID: string) => {
   );
 };
 
-export { create, get, getSingle };
+const deleteCus = async (dataID: string) => {
+  return await db.query(`DELETE FROM customer WHERE id = '${dataID}'`);
+};
+
+export { create, get, getSingle, deleteCus };
