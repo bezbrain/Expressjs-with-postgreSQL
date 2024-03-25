@@ -31,8 +31,6 @@ const createData = async (req: Request, res: Response) => {
     `INSERT INTO customer (id, name, email, username, password) VALUES ('${v4()}', '${name}', '${email}', '${username}', '${password}')`,
     (err, data) => {
       if (err) {
-        // console.log(err);
-        // console.log(err.message);
         res.status(400).json({
           status: false,
           message: `${err.message}`,
