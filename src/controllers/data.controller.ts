@@ -10,11 +10,6 @@ const { v4 } = require("uuid");
 const createData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
-  // Check if no field is empty
-  if (!name || !email || !username || !password) {
-    throw new BadRequestError("No field should be empty");
-  }
-
   // Ensure no unexpected fields are present
   const allowedFields = ["name", "email", "username", "password"];
   for (const field in req.body) {
