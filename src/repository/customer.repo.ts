@@ -24,8 +24,14 @@ const getSingle = async (dataID: string) => {
   );
 };
 
+const update = async (setValue: string, dataID: string) => {
+  return await db.query(
+    `UPDATE customer SET ${setValue} WHERE id = '${dataID}'`
+  );
+};
+
 const deleteCus = async (dataID: string) => {
   return await db.query(`DELETE FROM customer WHERE id = '${dataID}'`);
 };
 
-export { create, get, getSingle, deleteCus };
+export { create, get, getSingle, update, deleteCus };
