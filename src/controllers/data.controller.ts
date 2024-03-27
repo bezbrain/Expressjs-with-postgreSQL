@@ -119,6 +119,14 @@ const updateData = async (req: Request, res: Response) => {
     });
   }
 
+  // Ensure no unexpected fields are present
+  const allowedFields = ["name", "email", "username", "password"];
+  for (const field in req.body) {
+    if (!allowedFields.includes(field)) {
+      throw new BadRequestError(`Unexpected field: ${field}`);
+    }
+  }
+
   let queryToUpdate = "";
   let updateFields = [];
 
@@ -127,6 +135,9 @@ const updateData = async (req: Request, res: Response) => {
   if (email) updateFields.push(`email = '${email}'`);
   if (username) updateFields.push(`username = '${username}'`);
   if (password) updateFields.push(`password = '${password}'`);
+
+  // Update timestamp
+  updateFields.push(`updatedAt = current_timestamp`);
 
   queryToUpdate += updateFields.join(", ");
   // console.log(queryToUpdate);

@@ -15,7 +15,7 @@ const ErrorMiddleware = async (
 
   // Absence of key value
   if (err.code === "23502") {
-    console.log("Key needed");
+    // console.log("Key needed");
     const extractErrorValue = err.column;
     customError.message = `${extractErrorValue} should be provided`;
   }
