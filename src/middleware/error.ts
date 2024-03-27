@@ -22,7 +22,7 @@ const ErrorMiddleware = async (
 
   // Uniqueness error
   if (err.code === "23505") {
-    console.log("There is error");
+    // console.log("There is error");
     const extractValue = err.constraint.split("_");
     const capitalizeErrorMsg = extractValue[1].toUpperCase();
     customError.message = `${capitalizeErrorMsg} already existed`;

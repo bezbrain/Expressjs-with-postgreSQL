@@ -48,11 +48,6 @@ const getData = async (req: Request, res: Response) => {
 const getSingleData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
-  // Check if ID is not present at all
-  if (!dataID) {
-    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
-  }
-
   const customer = await getSingle(dataID);
 
   // Check if ID is present in the DB
@@ -70,20 +65,15 @@ const getSingleData = async (req: Request, res: Response) => {
 const deleteData = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
-  // Check if ID is provided at all
-  if (!dataID) {
-    return res.status(400).json({
-      status: false,
-      message: `User with the ID ${dataID} does not exist`,
-    });
-  }
+  const customer = await getSingle(dataID);
 
-  const customer = await deleteCus(dataID);
-
-  // Check if ID provided in present in the DB
+  // Check if ID is present in the DB
   if (customer.rowCount === 0) {
-    throw new NotFoundError(`Customer with the ID, ${dataID} is not foind`);
+    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
   }
+
+  // Delete data
+  await deleteCus(dataID);
 
   res.status(StatusCodes.OK).json({
     status: true,
@@ -111,10 +101,10 @@ const updateData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
   // Find single customer
-  const singleCustomer = await getSingle(dataID);
+  const customer = await getSingle(dataID);
 
   // If ID doesn't have any customer
-  if (singleCustomer.rowCount === 0) {
+  if (customer.rowCount === 0) {
     return res.status(400).json({
       status: false,
       message: `User with the ID ${dataID} does not exist`,
