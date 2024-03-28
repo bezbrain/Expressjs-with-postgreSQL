@@ -92,9 +92,17 @@ const deleteMultipleCustomers = async (req: Request, res: Response) => {
     `DELETE FROM customer WHERE email LIKE '%@gmail.com'`,
     (err, data) => {
       if (err) {
-        console.log(err);
+        // console.log(err);
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          status: "false",
+          message: "Not successful",
+        });
       } else {
-        console.log("Success");
+        // console.log("Success");
+        return res.status(StatusCodes.OK).json({
+          status: "true",
+          message: "All rows deleted successful",
+        });
       }
     }
   );
