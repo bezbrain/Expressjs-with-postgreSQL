@@ -16,6 +16,11 @@ const { v4 } = require("uuid");
 const createData = async (req: Request, res: Response) => {
   const { name, email, username, password } = req.body;
 
+  // Check if any field is empty
+  if (!name || !email || !username || !password) {
+    throw new BadRequestError("No field should be empty");
+  }
+
   // Ensure no unexpected fields are present
   const allowedFields = ["name", "email", "username", "password"];
   for (const field in req.body) {
@@ -103,20 +108,14 @@ const updateData = async (req: Request, res: Response) => {
   // Find single customer
   const customer = await getSingle(dataID);
 
-  // If ID doesn't have any customer
+  // Check if ID is present in the DB
   if (customer.rowCount === 0) {
-    return res.status(400).json({
-      status: false,
-      message: `User with the ID ${dataID} does not exist`,
-    });
+    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
   }
 
   // Check if any data is provided for updating
   if (!name && !email && !username && !password) {
-    return res.status(400).json({
-      status: false,
-      message: "No data provided for updating",
-    });
+    throw new BadRequestError("No data provided for updating");
   }
 
   // Ensure no unexpected fields are present
