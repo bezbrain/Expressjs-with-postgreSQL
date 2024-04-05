@@ -41,7 +41,8 @@ app.use(ErrorMiddleware);
 const startDB = async () => {
   try {
     await db.connect();
-    // createTable(); // Create a table if it does not exist
+    createUsers(); // Create a user table if it does not exist
+    createCustomers(); // Create a customer table if it does not exist
     /// Server listens to event
     app.listen(port, function () {
       console.log(`Server running on port: ${port}`);

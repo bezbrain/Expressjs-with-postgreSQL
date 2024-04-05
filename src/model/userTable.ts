@@ -15,7 +15,7 @@ const createUsers = () => {
       if (err) {
         console.log(err);
       } else {
-        console.log("Table created");
+        console.log("User Table created");
       }
     }
   );

@@ -15,7 +15,7 @@ const createCustomers = () => {
       if (err) {
         console.log(err);
       } else {
-        console.log("Table created");
+        console.log("Customer Table created");
       }
     }
   );

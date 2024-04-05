@@ -115,7 +115,7 @@ const deleteMultipleCustomers = async (req: Request, res: Response) => {
 // UPDATE CUSTOMER
 const updateCustomer = async (req: Request, res: Response) => {
   const { customerID } = req.params;
-  const { name, email, username, password } = req.body;
+  const { name, email, username, age } = req.body;
 
   // Find single customer
   const customer = await getSingle(customerID);
@@ -128,12 +128,12 @@ const updateCustomer = async (req: Request, res: Response) => {
   }
 
   // Check if any data is provided for updating
-  if (!name && !email && !username && !password) {
+  if (!name && !email && !username && !age) {
     throw new BadRequestError("No data provided for updating");
   }
 
   // Ensure no unexpected fields are present
-  const allowedFields = ["name", "email", "username", "password"];
+  const allowedFields = ["name", "email", "username", "age"];
   for (const field in req.body) {
     if (!allowedFields.includes(field)) {
       throw new BadRequestError(`Unexpected field: ${field}`);
@@ -147,7 +147,7 @@ const updateCustomer = async (req: Request, res: Response) => {
   if (name) updateFields.push(`name = '${name}'`);
   if (email) updateFields.push(`email = '${email}'`);
   if (username) updateFields.push(`username = '${username}'`);
-  if (password) updateFields.push(`password = '${password}'`);
+  if (age) updateFields.push(`age = '${age}'`);
 
   // Update timestamp
   updateFields.push(`updatedAt = current_timestamp`);
