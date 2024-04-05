@@ -14,7 +14,7 @@ import NotFoundMiddleware from "./middleware/not-found";
 import ErrorMiddleware from "./middleware/error";
 
 import dataRouter from "./routes/data.route";
-import createTable from "./model/query.tables";
+import createTable from "./model/userTable";
 
 // Set server port
 const port = 5000;
@@ -37,7 +37,7 @@ app.use(ErrorMiddleware);
 const startDB = async () => {
   try {
     await db.connect();
-    createTable(); // Create a table if it does not exist
+    // createTable(); // Create a table if it does not exist
     /// Server listens to event
     app.listen(port, function () {
       console.log(`Server running on port: ${port}`);

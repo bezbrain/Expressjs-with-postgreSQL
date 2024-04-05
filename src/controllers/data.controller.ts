@@ -10,7 +10,7 @@ import {
 } from "../repository/customer.repo";
 import { BadRequestError, NotFoundError } from "../errors";
 import { StatusCodes } from "http-status-codes";
-const { v4 } = require("uuid");
+// const { v4 } = require("uuid");
 
 // CREATE A RECORD
 const createData = async (req: Request, res: Response) => {
