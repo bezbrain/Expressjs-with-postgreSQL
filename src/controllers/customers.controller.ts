@@ -13,16 +13,16 @@ import { StatusCodes } from "http-status-codes";
 // const { v4 } = require("uuid");
 
 // CREATE A RECORD
-const createData = async (req: Request, res: Response) => {
-  const { name, email, username, password } = req.body;
+const createCustomer = async (req: Request, res: Response) => {
+  const { name, email, username, age } = req.body;
 
   // Check if any field is empty
-  if (!name || !email || !username || !password) {
+  if (!name || !email || !username || !age) {
     throw new BadRequestError("No field should be empty");
   }
 
   // Ensure no unexpected fields are present
-  const allowedFields = ["name", "email", "username", "password"];
+  const allowedFields = ["name", "email", "username", "age"];
   for (const field in req.body) {
     if (!allowedFields.includes(field)) {
       throw new BadRequestError(`Unexpected field: ${field}`);
@@ -30,7 +30,7 @@ const createData = async (req: Request, res: Response) => {
   }
 
   // Proceed with DB insertion
-  await create(name, email, username, password);
+  await create(name, email, username, age);
 
   res.status(StatusCodes.CREATED).json({
     status: true,
@@ -39,7 +39,7 @@ const createData = async (req: Request, res: Response) => {
 };
 
 // GET ALL CUSTOMERS
-const getData = async (req: Request, res: Response) => {
+const getCustomers = async (req: Request, res: Response) => {
   const response = await get();
 
   res.status(StatusCodes.OK).json({
@@ -50,7 +50,7 @@ const getData = async (req: Request, res: Response) => {
 };
 
 // GET SINGLE CUSTOMER
-const getSingleData = async (req: Request, res: Response) => {
+const getSingleCustomer = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
   const customer = await getSingle(dataID);
@@ -67,7 +67,7 @@ const getSingleData = async (req: Request, res: Response) => {
 };
 
 // DELETE CUSTOMER
-const deleteData = async (req: Request, res: Response) => {
+const deleteCustomer = async (req: Request, res: Response) => {
   const { dataID } = req.params;
 
   const customer = await getSingle(dataID);
@@ -109,7 +109,7 @@ const deleteMultipleCustomers = async (req: Request, res: Response) => {
 };
 
 // UPDATE CUSTOMER
-const updateData = async (req: Request, res: Response) => {
+const updateCustomer = async (req: Request, res: Response) => {
   const { dataID } = req.params;
   const { name, email, username, password } = req.body;
 
@@ -158,10 +158,10 @@ const updateData = async (req: Request, res: Response) => {
 };
 
 export {
-  createData,
-  getData,
-  getSingleData,
-  deleteData,
-  updateData,
+  createCustomer,
+  getCustomers,
+  getSingleCustomer,
+  deleteCustomer,
+  updateCustomer,
   deleteMultipleCustomers,
 };
