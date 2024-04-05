@@ -21,6 +21,7 @@ const register = async (req: Request, res: Response) => {
   //   Hash the password
   const hashPassword = await hashPass(user.password);
 
+  //   Call the create user repository function
   const userCreate = await createUser(
     v4(),
     name,
@@ -50,4 +51,9 @@ const register = async (req: Request, res: Response) => {
   //   res.send("Register a user");
 };
 
-export { register };
+const login = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  res.send("Login user");
+};
+
+export { register, login };
