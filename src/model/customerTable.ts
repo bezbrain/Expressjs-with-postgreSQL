@@ -1,6 +1,6 @@
 import db from "../datasource/db";
 
-const createTable = () => {
+const createCustomers = () => {
   db.query(
     `CREATE TABLE IF NOT EXISTS customers (
         id varchar PRIMARY KEY,
@@ -21,5 +21,5 @@ const createTable = () => {
   );
 };
 
-// module.exports = createTable;
-export default createTable;
+// module.exports = createCustomers;
+export default createCustomers;

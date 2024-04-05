@@ -13,8 +13,12 @@ import NotFoundMiddleware from "./middleware/not-found";
 // Error handling middleware
 import ErrorMiddleware from "./middleware/error";
 
-import dataRouter from "./routes/data.route";
-import createTable from "./model/userTable";
+// Impoer routes
+import customerRouter from "./routes/customers.route";
+
+// Import models
+import createUsers from "./model/userTable";
+import createCustomers from "./model/customerTable";
 
 // Set server port
 const port = 5000;
@@ -27,7 +31,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Create data request
-app.use("/", dataRouter);
+app.use("/", customerRouter);
 
 // Middleware invoked
 app.use(NotFoundMiddleware);
