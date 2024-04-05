@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 import UserSchema from "../schemaValidation/user.validation";
+import { hashPass } from "../schemaValidation/hashPassword";
 
 const register = async (req: Request, res: Response) => {
-  const { name, email, username, password } = req.body;
+  //   Validate user inputs
+  const user = await UserSchema.validateAsync(req.body);
 
-  await UserSchema.validateAsync({ name, email, username, password });
+  const hashPassword = await hashPass(user.password);
+
+  console.log(hashPassword);
 
   res.send("Register a user");
 };
