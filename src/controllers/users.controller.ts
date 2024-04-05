@@ -36,14 +36,13 @@ const register = async (req: Request, res: Response) => {
     throw new BadRequestError("Something went wrong!");
   }
 
-  console.log(userCreate);
+  //   console.log(userCreate);
 
   //   Extract userPassword using rest operator
   const { password, ...jwtData } = req.body;
+  jwtData.id = userId; // Create the id key in jwtData
 
-  jwtData.id = userId;
-
-  console.log(jwtData);
+  //   console.log(jwtData);
 
   //   Invoke sign a user if user registration successful
   const token = await signUser(jwtData);
@@ -64,11 +63,11 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    throw new BadRequestError("Username or password must be provided");
+    throw new BadRequestError("Username and password must be provided");
   }
 
   const user = await findUserByEmail(username);
-  //   Check if the user exists
+  //   Check if the user does not exist
   if (user.rows.length === 0) {
     throw new NotFoundError("Username does not exist");
   }
@@ -82,12 +81,29 @@ const login = async (req: Request, res: Response) => {
     throw new UnauthenticatedError("Password is incorrect");
   }
 
-  console.log(user.rows);
+  //   Check if password creation is succesful
+  if (user.rows.length === 0) {
+    throw new BadRequestError("Login not successful");
+  }
 
-  //   Invoke sign a user if user registration successful
-  const token = await signUser({});
+  //   Invoke sign a user if user login is successful
+  const token = await signUser({
+    id: user.rows[0].id,
+    name: user.rows[0].name,
+    email: user.rows[0].email,
+    username: user.rows[0].username,
+  });
 
-  res.send("Login user");
+  return res.status(StatusCodes.OK).json({
+    status: true,
+    message: "Login successful",
+    user: {
+      name: user.rows[0].name,
+      email: user.rows[0].email,
+      username: user.rows[0].username,
+    },
+    token,
+  });
 };
 
 export { register, login };
