@@ -13,8 +13,9 @@ import NotFoundMiddleware from "./middleware/not-found";
 // Error handling middleware
 import ErrorMiddleware from "./middleware/error";
 
-// Impoer routes
+// Import routes
 import customerRouter from "./routes/customers.route";
+import userRouter from "./routes/users.route";
 
 // Import models
 import createUsers from "./model/userTable";
@@ -32,6 +33,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // Create data request
 app.use("/", customerRouter);
+app.use("/", userRouter);
 
 // Middleware invoked
 app.use(NotFoundMiddleware);
