@@ -14,23 +14,26 @@ const ErrorMiddleware = async (
     statusCode: err.statusCode || 500,
   };
 
-  // Required Field error(caught by JOI). And if email is not in the right format. And if passowrd does not contain require characters
-  if (
-    err.details[0].type === "any.required" ||
-    err.details[0].type === "string.empty" ||
-    err.details[0].type === "string.email" ||
-    err.details[0].type === "string.pattern.base"
-  ) {
-    const errorValue = err.details[0].context.key;
-    // console.log(errorValue);
-    customError.message = `${errorValue} is required`;
-    if (err.details[0].type === "string.email") {
-      customError.message = `${errorValue} is not in the right format`;
-      customError.statusCode = StatusCodes.BAD_REQUEST;
-    }
-    if (err.details[0].type === "string.pattern.base") {
-      customError.message = `${errorValue} should contain at least one capital letter, special character and number`;
-      customError.statusCode = StatusCodes.BAD_REQUEST;
+  // Check if err.details exists and has a lease one element
+  if (err.details && err.details.length > 0) {
+    // Required Field error(caught by JOI). And if email is not in the right format. And if passowrd does not contain require characters
+    if (
+      err.details[0].type === "any.required" ||
+      err.details[0].type === "string.empty" ||
+      err.details[0].type === "string.email" ||
+      err.details[0].type === "string.pattern.base"
+    ) {
+      const errorValue = err.details[0].context.key;
+      // console.log(errorValue);
+      customError.message = `${errorValue} is required`;
+      if (err.details[0].type === "string.email") {
+        customError.message = `${errorValue} is not in the right format`;
+        customError.statusCode = StatusCodes.BAD_REQUEST;
+      }
+      if (err.details[0].type === "string.pattern.base") {
+        customError.message = `${errorValue} should contain at least one capital letter, special character and number`;
+        customError.statusCode = StatusCodes.BAD_REQUEST;
+      }
     }
   }
 

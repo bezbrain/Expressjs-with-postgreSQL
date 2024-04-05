@@ -7,8 +7,10 @@ const createUser = async (
   username: string,
   password: string
 ) => {
-  return db.query(
+  return await db.query(
     `INSERT INTO users (id, name, email, username, password) VALUES ('${v4()}', $1, $2, $3, $4)`,
     [name, email, username, password]
   );
 };
+
+export { createUser };
