@@ -51,13 +51,15 @@ const getCustomers = async (req: Request, res: Response) => {
 
 // GET SINGLE CUSTOMER
 const getSingleCustomer = async (req: Request, res: Response) => {
-  const { dataID } = req.params;
+  const { customerID } = req.params;
 
-  const customer = await getSingle(dataID);
+  const customer = await getSingle(customerID);
 
   // Check if ID is present in the DB
   if (customer.rowCount === 0) {
-    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
+    throw new NotFoundError(
+      `Customer with the ID, ${customerID} does not exist`
+    );
   }
 
   res.status(StatusCodes.OK).json({
@@ -68,17 +70,19 @@ const getSingleCustomer = async (req: Request, res: Response) => {
 
 // DELETE CUSTOMER
 const deleteCustomer = async (req: Request, res: Response) => {
-  const { dataID } = req.params;
+  const { customerID } = req.params;
 
-  const customer = await getSingle(dataID);
+  const customer = await getSingle(customerID);
 
   // Check if ID is present in the DB
   if (customer.rowCount === 0) {
-    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
+    throw new NotFoundError(
+      `Customer with the ID, ${customerID} does not exist`
+    );
   }
 
   // Delete data
-  await deleteCus(dataID);
+  await deleteCus(customerID);
 
   res.status(StatusCodes.OK).json({
     status: true,
@@ -110,15 +114,17 @@ const deleteMultipleCustomers = async (req: Request, res: Response) => {
 
 // UPDATE CUSTOMER
 const updateCustomer = async (req: Request, res: Response) => {
-  const { dataID } = req.params;
+  const { customerID } = req.params;
   const { name, email, username, password } = req.body;
 
   // Find single customer
-  const customer = await getSingle(dataID);
+  const customer = await getSingle(customerID);
 
   // Check if ID is present in the DB
   if (customer.rowCount === 0) {
-    throw new NotFoundError(`Customer with the ID, ${dataID} does not exist`);
+    throw new NotFoundError(
+      `Customer with the ID, ${customerID} does not exist`
+    );
   }
 
   // Check if any data is provided for updating
@@ -149,7 +155,7 @@ const updateCustomer = async (req: Request, res: Response) => {
   queryToUpdate += updateFields.join(", ");
   // console.log(queryToUpdate);
 
-  await update(queryToUpdate, dataID);
+  await update(queryToUpdate, customerID);
 
   res.status(200).json({
     status: true,
