@@ -14,4 +14,11 @@ const createUser = async (
   );
 };
 
-export { createUser };
+const findUserByEmail = async (username: string) => {
+  return await db.query(
+    `SELECT id, name, email, username, password FROM users WHERE username = $1`,
+    [username]
+  );
+};
+
+export { createUser, findUserByEmail };
