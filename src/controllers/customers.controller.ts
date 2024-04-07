@@ -10,23 +10,14 @@ import {
 } from "../repository/customer.repo";
 import { BadRequestError, NotFoundError } from "../errors";
 import { StatusCodes } from "http-status-codes";
+import CustomerSchema from "../schemaValidation/customer.validation";
 
 // CREATE A RECORD
 const createCustomer = async (req: Request, res: Response) => {
   const { name, email, username, age } = req.body;
 
-  // Check if any field is empty
-  if (!name || !email || !username || !age) {
-    throw new BadRequestError("No field should be empty");
-  }
-
-  // Ensure no unexpected fields are present
-  const allowedFields = ["name", "email", "username", "age"];
-  for (const field in req.body) {
-    if (!allowedFields.includes(field)) {
-      throw new BadRequestError(`Unexpected field: ${field}`);
-    }
-  }
+  // Customer validations
+  await CustomerSchema.validateAsync(req.body);
 
   // Proceed with DB insertion
   await create(name, email, username, age);
