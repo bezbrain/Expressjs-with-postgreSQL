@@ -17,15 +17,16 @@ const authMiddleware = async (
   const extractToken = authorization.split(" ")[1];
 
   try {
-    const tokenPayload: JwtPayload = await verifyUserToken(extractToken);
-    req.user = tokenPayload;
+    const { userId, name, email, username }: JwtPayload = await verifyUserToken(
+      extractToken
+    );
+    req.user = { userId, name, email, username };
+    next();
   } catch (error) {
     throw new UnauthenticatedError(
       "You are not authorized to access this resources"
     );
   }
-
-  res.send("Auth Middleware");
 };
 
 export { authMiddleware };

@@ -38,7 +38,7 @@ const register = async (req: Request, res: Response) => {
 
   //   Extract userPassword using rest operator
   const { password, ...jwtData } = req.body;
-  jwtData.id = userId; // Create the id key in jwtData
+  jwtData.userId = userId; // Create the userId id key in jwtData
 
   //   Invoke sign a user if user registration successful
   const token = await signUser(jwtData);
@@ -84,7 +84,7 @@ const login = async (req: Request, res: Response) => {
 
   //   Invoke sign a user if user login is successful
   const token = await signUser({
-    id: user.rows[0].id,
+    userId: user.rows[0].id,
     name: user.rows[0].name,
     email: user.rows[0].email,
     username: user.rows[0].username,
