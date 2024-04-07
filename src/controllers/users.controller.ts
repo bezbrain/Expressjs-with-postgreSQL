@@ -36,13 +36,9 @@ const register = async (req: Request, res: Response) => {
     throw new BadRequestError("Something went wrong!");
   }
 
-  //   console.log(userCreate);
-
   //   Extract userPassword using rest operator
   const { password, ...jwtData } = req.body;
   jwtData.id = userId; // Create the id key in jwtData
-
-  //   console.log(jwtData);
 
   //   Invoke sign a user if user registration successful
   const token = await signUser(jwtData);
@@ -72,7 +68,7 @@ const login = async (req: Request, res: Response) => {
     throw new NotFoundError("Username does not exist");
   }
 
-  //   Compare password if correct or not
+  //   Compare passwords if correct or not
   const isPasswordCorrect = await comparePassword(
     password,
     user.rows[0].password
