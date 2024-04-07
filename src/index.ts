@@ -20,6 +20,7 @@ import userRouter from "./routes/users.route";
 // Import models
 import createUsers from "./model/userTable";
 import createCustomers from "./model/customerTable";
+import { authMiddleware } from "./middleware/auth";
 
 // Set server port
 const port = 5000;
@@ -32,8 +33,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Create data request
-app.use("/", customerRouter);
 app.use("/", userRouter);
+app.use("/", authMiddleware, customerRouter);
 
 // Middleware invoked
 app.use(NotFoundMiddleware);

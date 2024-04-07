@@ -1,5 +1,5 @@
-import { Response, Request, NextFunction } from "express";
-import user from "../mockDB/mock-db";
+import { Response, Request } from "express";
+// import user from "../mockDB/mock-db";
 import db from "../datasource/db";
 import {
   create,
@@ -10,7 +10,6 @@ import {
 } from "../repository/customer.repo";
 import { BadRequestError, NotFoundError } from "../errors";
 import { StatusCodes } from "http-status-codes";
-// const { v4 } = require("uuid");
 
 // CREATE A RECORD
 const createCustomer = async (req: Request, res: Response) => {
