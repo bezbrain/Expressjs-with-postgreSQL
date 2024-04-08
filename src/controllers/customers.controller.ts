@@ -58,10 +58,12 @@ const getCustomers = async (req: Request, res: Response) => {
 const getSingleCustomer = async (req: Request, res: Response) => {
   const { customerID } = req.params;
 
+  const createdBy = req.user?.userId;
+
   const customer = await getSingle(customerID);
 
-  // Check if ID is present in the DB
-  if (customer.rowCount === 0) {
+  // Check if ID is present in the DB and exist in the logged user
+  if (customer.rowCount === 0 || customer.rows[0].createdby !== createdBy) {
     throw new NotFoundError(
       `Customer with the ID, ${customerID} does not exist`
     );
@@ -69,7 +71,7 @@ const getSingleCustomer = async (req: Request, res: Response) => {
 
   res.status(StatusCodes.OK).json({
     status: true,
-    data: customer.rows,
+    data: customer.rows[0],
   });
 };
 
@@ -77,10 +79,12 @@ const getSingleCustomer = async (req: Request, res: Response) => {
 const deleteCustomer = async (req: Request, res: Response) => {
   const { customerID } = req.params;
 
+  const createdBy = req.user?.userId;
+
   const customer = await getSingle(customerID);
 
-  // Check if ID is present in the DB
-  if (customer.rowCount === 0) {
+  // Check if ID is present in the DB and exist in the logged user
+  if (customer.rowCount === 0 || customer.rows[0].createdby !== createdBy) {
     throw new NotFoundError(
       `Customer with the ID, ${customerID} does not exist`
     );

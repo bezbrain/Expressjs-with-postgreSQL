@@ -22,7 +22,7 @@ const get = async (createdBy: string) => {
 
 const getSingle = async (dataID: string) => {
   return await db.query(
-    `SELECT id, name, email, username FROM customers WHERE id = $1`,
+    `SELECT id, name, email, username, createdBy FROM customers WHERE id = $1`,
     [dataID]
   );
 };
