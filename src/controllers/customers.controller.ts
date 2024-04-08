@@ -21,13 +21,15 @@ const createCustomer = async (req: Request, res: Response) => {
   const { userId }: any = req.user;
 
   // Add the userId for an identifier
-  req.body.userId = userId;
+  req.body.createdBy = userId;
 
   // Customer validations
   await CustomerSchema.validateAsync(req.body);
 
+  const createdBy = req.body.createdBy;
+
   // Proceed with DB insertion
-  await create(name, email, username, age);
+  await create(name, email, username, age, createdBy);
 
   res.status(StatusCodes.CREATED).json({
     status: true,
@@ -37,7 +39,13 @@ const createCustomer = async (req: Request, res: Response) => {
 
 // GET ALL CUSTOMERS
 const getCustomers = async (req: Request, res: Response) => {
-  const response = await get();
+  const createdBy = req.user?.userId;
+
+  if (createdBy === undefined) {
+    throw new BadRequestError("CreatedBy is not defined");
+  }
+
+  const response = await get(createdBy);
 
   res.status(StatusCodes.OK).json({
     status: true,

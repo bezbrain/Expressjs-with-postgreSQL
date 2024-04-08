@@ -14,7 +14,7 @@ const schema = Joi.object({
 
   age: Joi.number().integer().min(18).max(99).required().strict(),
 
-  userId: Joi.string().required(),
+  createdBy: Joi.string().required(),
 });
 
 export default schema;

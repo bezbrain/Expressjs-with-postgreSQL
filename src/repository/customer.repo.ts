@@ -5,16 +5,19 @@ const create = async (
   name: string,
   email: string,
   username: string,
-  age: string
+  age: string,
+  createdBy: string
 ) => {
   return await db.query(
-    `INSERT INTO customers (id, name, email, username, age) VALUES ('${v4()}', $1, $2, $3, $4)`,
-    [name, email, username, age]
+    `INSERT INTO customers (id, name, email, username, age, createdBy) VALUES ('${v4()}', $1, $2, $3, $4, $5)`,
+    [name, email, username, age, createdBy]
   );
 };
 
-const get = async () => {
-  return await db.query(`SELECT id, name, email, username FROM customers`);
+const get = async (createdBy: string) => {
+  return await db.query(`SELECT * FROM customers WHERE createdBy = $1`, [
+    createdBy,
+  ]);
 };
 
 const getSingle = async (dataID: string) => {
