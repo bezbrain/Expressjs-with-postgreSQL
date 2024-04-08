@@ -126,11 +126,13 @@ const updateCustomer = async (req: Request, res: Response) => {
   const { customerID } = req.params;
   const { name, email, username, age } = req.body;
 
+  const createdBy = req.body.createdBy;
+
   // Find single customer
   const customer = await getSingle(customerID);
 
-  // Check if ID is present in the DB
-  if (customer.rowCount === 0) {
+  // Check if ID is present in the DB and exist in the logged user
+  if (customer.rowCount === 0 || customer.rows[0].createdby !== createdBy) {
     throw new NotFoundError(
       `Customer with the ID, ${customerID} does not exist`
     );
