@@ -83,7 +83,7 @@ const deleteCustomer = async (req: Request, res: Response) => {
 // DELETE MANY ROWS BASED ON EMAIL
 const deleteMultipleCustomers = async (req: Request, res: Response) => {
   db.query(
-    `DELETE FROM customer WHERE email LIKE '%@gmail.com'`,
+    `DELETE FROM customers WHERE email LIKE '%@gmail.com'`,
     (err, data) => {
       if (err) {
         // console.log(err);
