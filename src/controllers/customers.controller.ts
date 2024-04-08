@@ -14,7 +14,14 @@ import CustomerSchema from "../schemaValidation/customer.validation";
 
 // CREATE A RECORD
 const createCustomer = async (req: Request, res: Response) => {
-  const { name, email, username, age } = req.body;
+  const {
+    body: { name, email, username, age },
+  } = req;
+
+  const { userId }: any = req.user;
+
+  // Add the userId for an identifier
+  req.body.userId = userId;
 
   // Customer validations
   await CustomerSchema.validateAsync(req.body);

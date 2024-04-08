@@ -3,6 +3,7 @@ import db from "../datasource/db";
 const createCustomers = () => {
   db.query(
     `CREATE TABLE IF NOT EXISTS customers (
+        userId varchar NOT NULL UNIQUE,
         id varchar PRIMARY KEY,
         name varchar NOT NULL,
         email varchar UNIQUE NOT NULL,

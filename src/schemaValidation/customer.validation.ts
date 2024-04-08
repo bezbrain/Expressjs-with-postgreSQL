@@ -13,6 +13,8 @@ const schema = Joi.object({
   username: Joi.string().alphanum().min(3).max(10).required(),
 
   age: Joi.number().integer().min(18).max(99).required().strict(),
+
+  userId: Joi.string().required(),
 });
 
 export default schema;
