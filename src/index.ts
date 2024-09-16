@@ -13,8 +13,14 @@ import NotFoundMiddleware from "./middleware/not-found";
 // Error handling middleware
 import ErrorMiddleware from "./middleware/error";
 
-import dataRouter from "./routes/data.route";
-import createTable from "./model/query.tables";
+// Import routes
+import customerRouter from "./routes/customers.route";
+import userRouter from "./routes/users.route";
+
+// Import models
+import createUsers from "./model/userTable";
+import createCustomers from "./model/customerTable";
+import { authMiddleware } from "./middleware/auth";
 
 // Set server port
 const port = 5000;
@@ -27,7 +33,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Create data request
-app.use("/", dataRouter);
+app.use("/", userRouter);
+app.use("/", authMiddleware, customerRouter);
 
 // Middleware invoked
 app.use(NotFoundMiddleware);
@@ -37,7 +44,8 @@ app.use(ErrorMiddleware);
 const startDB = async () => {
   try {
     await db.connect();
-    createTable(); // Create a table if it does not exist
+    createUsers(); // Create a user table if it does not exist
+    createCustomers(); // Create a customer table if it does not exist
     /// Server listens to event
     app.listen(port, function () {
       console.log(`Server running on port: ${port}`);

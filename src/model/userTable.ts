@@ -1,8 +1,8 @@
 import db from "../datasource/db";
 
-const createTable = () => {
+const createUsers = () => {
   db.query(
-    `CREATE TABLE IF NOT EXISTS customer (
+    `CREATE TABLE IF NOT EXISTS users (
         id varchar PRIMARY KEY,
         name varchar NOT NULL,
         email varchar UNIQUE NOT NULL,
@@ -15,11 +15,11 @@ const createTable = () => {
       if (err) {
         console.log(err);
       } else {
-        console.log("Table created");
+        console.log("User Table created");
       }
     }
   );
 };
 
-// module.exports = createTable;
-export default createTable;
+// module.exports = createUsers;
+export default createUsers;

@@ -11,15 +11,21 @@
   "author": "<eshooluwasegun98@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "http-status-codes": "^2.3.0",
+    "joi": "^17.12.3",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "uuidv4": "^6.2.13"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.11.30",
     "@types/pg": "^8.11.4",
     "cross-env": "^7.0.3",
